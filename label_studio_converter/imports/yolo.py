@@ -12,7 +12,7 @@ logger = logging.getLogger('root')
 
 
 def convert_yolo_to_ls(input_dir, out_file,
-                       to_name='image', from_name='label', out_type="annotations",
+                       to_name='image', from_name='label', out_type="predictions",
                        image_root_url='/data/local-files/?d=', image_ext='.jpg,.jpeg,.png'):
 
     """ Convert YOLO labeling to Label Studio JSON
@@ -60,11 +60,11 @@ def convert_yolo_to_ls(input_dir, out_file,
         if not image_file_found_flag:
             continue
         
-        image_root_url += '' if image_root_url.endswith('/') else '/'
+
         task = {
             "data": {
                 # eg. '../../foo+you.py' -> '../../foo%2Byou.py'
-                "image": image_root_url + str(pathname2url(image_file))
+                "image": image_root_url +'images%5C'+ str(pathname2url(image_file))
             }
         }
 
@@ -166,3 +166,15 @@ def add_parser(subparsers):
         help='image extension to search: .jpeg or .jpg, .png',
         default='.jpg',
     )
+
+
+if __name__=='__main__' :
+    yolo_path='D:\OneDrive\Henry_Technologies\Haut_parleur_Foxlink\Databases\Labelling\Selected_images'
+    output_path=yolo_path
+    image_ext='.png'
+
+    convert_yolo_to_ls(input_dir=yolo_path,
+                       out_file=os.path.join(yolo_path,'label_studio_format.json'),
+                       image_ext=image_ext,
+                       )
+
